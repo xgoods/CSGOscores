@@ -128,50 +128,42 @@ function getTmpGameResults() {
     do 
         for f in $gameFolder/$subd/*
         do
-            cat $f | grep "$finalDate" | sed 's/<\/span>//g' | sed '/^$/d' >> tmpGameResults.txt
+            cat $f | while read gameLine
+            do
+                echo $gameLine | grep "$finalDate" | sed 's/<\/span>//g' | sed '/^$/d' >> tmpGameResults.txt
             
-            cat $f | grep "$prevDate" | sed 's/<\/span>//g' | sed '/^$/d' >> tmpGameResults.txt
+                echo $gameLine | grep "$prevDate" | sed 's/<\/span>//g' | sed '/^$/d' >> tmpGameResults.txt
             
-            cat $f | grep "$nextDate" | sed 's/<\/span>//g' | sed '/^$/d' >> tmpGameResults.txt
+                echo $gameLine | grep "$nextDate" | sed 's/<\/span>//g' | sed '/^$/d' >> tmpGameResults.txt
                 
-            cat $f | egrep -o '([01]?[0-9]|2[0-3]):[0-5][0-9]    </span>' | sed 's/    <\/span>//g' >> tmpGameResults.txt
-            
-            cat $f | grep -o 'href="/?pageid=[0-9]*&amp;teamid=[0-9]*">.* <'| sed 's/href="\/?pageid=[0-9]*&amp;teamid=[0-9]*">//g' | sed 's/<\/a><\/span> <//g' >> tmpGameResults.txt
-          
-            cat $f | grep -o 'matchScore winningScore">[0-9]*' | sed 's/matchScore winningScore">//g' >> tmpGameResults.txt
-         
-             cat $f | grep -o 'matchScore losingScore">[0-9]*' | sed 's/matchScore losingScore">//g' >> tmpGameResults.txt
-         
-             cat $f | grep -o 'matchScore drawScore">[0-9]*' | sed 's/matchScore drawScore">//g' >> tmpGameResults.txt
-         
-             cat $f | grep -o 'href="/?pageid=[0-9]*&amp;eventid=[0-9]*">.*</a></div>' | sed 's/href="\/?pageid=[0-9]*&amp;eventid=[0-9]*">//g' | sed 's/<\/a><\/div>//g' >> tmpGameResults.txt
-         
-             cat $f | grep -o 'src="http://static.hltv.org//images/hotmatch/.*' | sed 's/src="http:\/\/static.hltv.org\/\/images\/hotmatch\///g' | sed 's/.png"\/><\/div>\      <div class="hotmatchbox" style="margin-top: -7px;font-size: 12px;width:270px;border-top:0;">//g' | sed 's/.png"\/><\/div>\    <div style="margin-top:3px;"><\/div>//g' >> tmpGameResults.txt
+                echo $gameLine | egrep -o '([01]?[0-9]|2[0-3]):[0-5][0-9]    </span>' | sed 's/    <\/span>//g' >> tmpGameResults.txt
                 
-             #mapScore1=($(cat $f | grep -x '                  <span style="color: green">[0-9]*</span>:<span' | sed 's/<span\ style="color:\ green">//g' | sed 's/<\/span>:<span//g'))
-             
-             #mapScore3=($(cat $f | grep -x '            style="color: red">[0-9]*</span>' | sed 's/style="color:\ red">//g' | sed 's/<\/span>//g' | sed '/^$/d'))
-             
-             
-             #mapScore2=($(cat $f | grep -x '                  <span style="color: red">[0-9]*</span>:<span' | sed 's/<span\ style="color:\ red">//g' | sed 's/<\/span>:<span//g'))
-             
-             #mapScore4=($(cat $f | grep -x '            style="color: green">[0-9]*</span>' | sed 's/style="color:\ green">//g' | sed 's/<\/span>//g' | sed '/^$/d'))
-             
-             #echo ${mapScore1[@]}
-             #echo ${mapScore3[@]}
-             #echo ${mapScore2[@]}
-             #echo ${mapScore4[@]}
-             
-             #cat $f | grep -o '<span style="color: blue">[0-9]*</span>:<span' | sed 's/<span\ style="color:\ blue">//g' | sed 's/<\/span>:<span//g' >> tmpGameResults.txt
+                echo $gameLine | grep -o 'href="/?pageid=[0-9]*&amp;teamid=[0-9]*">.* <' | sed 's/href="\/?pageid=[0-9]*&amp;teamid=[0-9]*">//g' | sed 's/<\/a><\/span> <//g' >> tmpGameResults.txt
+    
+                echo $gameLine | grep -o 'matchScore winningScore">[0-9]*' | sed 's/matchScore winningScore">//g' >> tmpGameResults.txt
+         
+                echo $gameLine| grep -o 'matchScore losingScore">[0-9]*' | sed 's/matchScore losingScore">//g' >> tmpGameResults.txt
+         
+                echo $gameLine | grep -o 'matchScore drawScore">[0-9]*' | sed 's/matchScore drawScore">//g' >> tmpGameResults.txt
+         
+                echo $gameLine | grep -o 'href="/?pageid=[0-9]*&amp;eventid=[0-9]*">.*</a></div>' | sed 's/href="\/?pageid=[0-9]*&amp;eventid=[0-9]*">//g' | sed 's/<\/a><\/div>//g' >> tmpGameResults.txt
+         
+                echo $gameLine | grep -o 'src="http://static.hltv.org//images/hotmatch/.*' | sed 's/src="http:\/\/static.hltv.org\/\/images\/hotmatch\///g' | sed 's/.png"\/><\/div>\      <div class="hotmatchbox" style="margin-top: -7px;font-size: 12px;width:270px;border-top:0;">//g' | sed 's/.png"\/><\/div>\    <div style="margin-top:3px;"><\/div>//g' >> tmpGameResults.txt
                 
-            #cat $f | grep -o '            style="color: blue">[0-9]*</span>' | sed 's/style="color:\ blue">//g' | sed 's/<\/span>//g' | sed '/^$/d'>> tmpGameResults.txt
-            
-            echo 'game complete' >> tmpGameResults.txt
+                echo $gameLine | grep -x '                  <span style="color: green">[0-9]*</span>:<span' | sed 's/<span\ style="color:\ green">//g' | sed 's/<\/span>:<span//g' >> tmpGameResults.txt 
+             
+                echo $gameLine | grep -x '            style="color: red">[0-9]*</span>' | sed 's/style="color:\ red">//g' | sed 's/<\/span>//g' | sed '/^$/d' >> tmpGameResults.txt
+             
+             
+                echo $gameLine | grep -x '                  <span style="color: red">[0-9]*</span>:<span' | sed 's/<span\ style="color:\ red">//g' | sed 's/<\/span>:<span//g' >> tmpGameResults.txt
+             
+                echo $gameLine | grep -x '            style="color: green">[0-9]*</span>' | sed 's/style="color:\ green">//g' | sed 's/<\/span>//g' | sed '/^$/d' >> tmpGameResults.txt
+             
+            done
+    
+            echo 'Game Complete' >> tmpGameResults.txt 
             echo 'game '$gameCount' complete' >> log.txt && ((gameCount++))
-        
-            
         done
-        
     done
 }
 
@@ -185,7 +177,7 @@ function getTmpGameResultsComma() {
             printf '%s,' "$tmpGameResultsLine" | tr -d '[:space:]' >> tmpGameResultsComma.txt
         fi
         
-        if [[ $tmpGameResultsLine =~ game.*complete ]]
+        if [[ $tmpGameResultsLine =~ Game.*Complete ]]
         then
             echo "" >> tmpGameResultsComma.txt
         fi
@@ -209,12 +201,13 @@ function getMatchingGameResults() {
             echo $tmpGameResultsCommaLine >> GameResults.csv
         
         fi
+        
     done < tmpGameResultsComma.txt
 }
 
 getMatchingGameResults
 
-sort -r GameResults.csv -o GameResults.csv
+sort -rt ',' -k5 -k6 GameResults.csv -o GameResults.csv 
 
 rm matchresults.txt
 rm tmpmatchresults.txt
@@ -222,6 +215,7 @@ rm tmpGameResultsComma.txt
 rm tmpGameResults.txt
 find $gameFolder -type d -ctime +3 -exec rm -rf {} \;
 end=`date +%s`
-runtime='runtime='$((end-start)) 
-echo $runtime' seconds' >> log.txt
+runtime='runtime='$(((end-start)/60)) 
+echo $runtime' minutes' >> log.txt
 echo "run complete" >> log.txt
+notify-send 'Proccess Complete with runtime='$runtime' minutes'
