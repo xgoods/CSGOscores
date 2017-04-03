@@ -213,7 +213,7 @@ rm matchresults.txt
 rm tmpmatchresults.txt
 rm tmpGameResultsComma.txt
 rm tmpGameResults.txt
-find $gameFolder -type d -ctime +3 -exec rm -rf {} \;
+find $gameFolder -type d -ctime +1 -exec rm -rf {} \;
 end=`date +%s`
 runtime='runtime='$(((end-start)/60)) 
 echo $runtime' minutes' >> log.txt
