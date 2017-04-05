@@ -87,8 +87,9 @@ function getGames() {
             :
         else
             wget -qP $gameFiles $gameGet
+        
         fi
-
+        
     done < matchresults.txt
 }
 
@@ -208,14 +209,13 @@ function getMatchingGameResults() {
 getMatchingGameResults
 
 sort -rt ',' -k5 -k6 GameResults.csv -o GameResults.csv 
-
+end=`date +%s`
 rm matchresults.txt
 rm tmpmatchresults.txt
 rm tmpGameResultsComma.txt
 rm tmpGameResults.txt
-find $gameFolder -type d -ctime +1 -exec rm -rf {} \;
-end=`date +%s`
+rm -rf $gameFolder/*
 runtime='runtime='$(((end-start)/60)) 
 echo $runtime' minutes' >> log.txt
 echo "run complete" >> log.txt
-notify-send 'Proccess Complete with runtime='$runtime' minutes'
+notify-send 'Proccess Complete with'$runtime' minutes'
